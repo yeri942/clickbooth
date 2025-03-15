@@ -1,0 +1,50 @@
+/* 폰트 */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap");
+
+body {
+    background-color: black;
+    height: 100vh;
+}
+.main_wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /* 드래그막기 */
+    -ms-user-select: none;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+.title {
+    color: white;
+    text-align: center;
+    padding: 0 50px 30px;
+    font-size: clamp(80px, 15vw, 200px);
+    font-family: "Cormorant", serif;
+}
+.gobtn {
+    color: white;
+    text-align: center;
+    font-size: clamp(18px, 2vw, 24px);
+    cursor: pointer;
+    animation: colorchange 1s infinite;
+}
+
+/* 애니메이션 */
+@keyframes colorchange {
+    0% {
+        color: white;
+    }
+
+    50% {
+        color: gray;
+    }
+
+    100% {
+        color: white;
+    }
+}

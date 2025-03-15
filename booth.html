@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./css/booth_style.css" />
+        <script defer src="./js/booth_script.js"></script>
+        <title>click booth</title>
+    </head>
+    <body>
+        <div class="booth_wrap">
+            <div class="camera_wrap">
+                <video id="cameraview" autoplay playsinline></video>
+                <div class="capture_div">
+                    <button type="button" id="capturebtn">Stop</button>
+                </div>
+            </div>
+            <canvas id="captureCanvas" style="display: none"></canvas>
+
+            <!-- 캡처된 이미지 슬라이드 -->
+            <div class="capturedImage_wrap" id="capturedList"></div>
+        </div>
+    </body>
+</html>
