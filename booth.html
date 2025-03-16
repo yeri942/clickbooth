@@ -11,14 +11,21 @@
         <div class="booth_wrap">
             <div class="camera_wrap">
                 <video id="cameraview" autoplay playsinline></video>
+                <div class="flash-effect" id="flashEffect"></div>
                 <div class="capture_div">
-                    <button type="button" id="capturebtn">Stop</button>
+                    <button type="button" id="capturebtn"></button>
                 </div>
+                <div id="imageCount" class="image-count">0/4</div>
+                <!-- 사진 개수 표시 -->
             </div>
             <canvas id="captureCanvas" style="display: none"></canvas>
 
             <!-- 캡처된 이미지 슬라이드 -->
             <div class="capturedImage_wrap" id="capturedList"></div>
+        </div>
+        <!-- 로딩창 -->
+        <div id="overlay" class="overlay">
+            <p class="overlay-text">Please wait...</p>
         </div>
     </body>
 </html>

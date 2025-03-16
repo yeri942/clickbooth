@@ -1,4 +1,5 @@
 let stream = null; // 웹캠 스트림 저장 변수
+const maxImages = 4; // 최대 이미지 개수
 
 // 웹캠 시작 함수
 async function startWebcam() {
@@ -15,17 +16,83 @@ async function startWebcam() {
     }
 }
 
-// 웹캡 캡처 함수
+// 플래시 효과 함수
+function triggerFlashEffect() {
+    const flash = document.getElementById("flashEffect");
+    if (!flash) return;
+    flash.style.animation = "none"; // 애니메이션 초기화
+    void flash.offsetWidth; // 리플로우 트리거 (애니메이션 리셋)
+    flash.style.animation = "flash 0.1s ease-out"; // 플래시 애니메이션 실행
+}
+
+// 현재 이미지 개수 업데이트 함수
+function updateImageCount() {
+    const capturedList = document.getElementById("capturedList");
+    const imageCount = capturedList.children.length; // 현재 이미지 개수
+    const countDisplay = document.getElementById("imageCount");
+    const captureButton = document.getElementById("capturebtn");
+
+    countDisplay.textContent = `${imageCount}/${maxImages}`; // 개수 표시
+
+    if (imageCount >= maxImages) {
+        captureButton.disabled = true;
+        captureButton.style.opacity = "0.5"; // 비활성화 스타일 추가
+        saveImagesToLocalStorage(); // 촬영된 이미지 저장
+        showOverlayAndRedirect(); // 오버레이 표시 후 페이지 이동
+    }
+}
+
+// 사진을 로컬 스토리지에 저장하는 함수
+function saveImagesToLocalStorage() {
+    const capturedList = document.getElementById("capturedList").children;
+    let images = [];
+
+    for (let i = 0; i < capturedList.length; i++) {
+        images.push(capturedList[i].src); // 이미지 데이터를 배열에 저장
+    }
+
+    localStorage.setItem("capturedImages", JSON.stringify(images)); // 로컬 스토리지에 저장
+    console.log("📸 저장된 이미지 데이터:", images); // 저장된 데이터 확인 (디버깅용)
+}
+
+// 버튼 클릭 시 플래시 효과 실행 후 페이지 이동
+function showOverlayAndRedirect() {
+    const overlay = document.getElementById("overlay");
+    overlay.classList.add("active"); // 오버레이 표시
+
+    setTimeout(() => {
+        window.location.href = "select_filter.html"; // 1초 후 페이지 이동
+    }, 1000);
+}
+
+// 버튼 연속 클릭 방지 변수
+let isCapturing = false;
+
+// 웹캡 캡처 함수 (최대 4장 제한, 추가 캡처 불가)
 function capturecam() {
-    if (!stream) {
-        console.warn("⚠ 웹캠이 활성화되지 않음!");
+    if (isCapturing) return; // 이미 실행 중이면 다시 실행되지 않도록 방지
+    isCapturing = true; // 실행 중 플래그 설정
+
+    const capturedList = document.getElementById("capturedList");
+
+    // 최대 이미지 개수 제한 (더 이상 추가 X)
+    if (capturedList.children.length >= maxImages) {
+        console.warn("⚠ 최대 이미지 개수(4개)를 초과할 수 없습니다!");
+        isCapturing = false; // 실행 중 플래그 해제
         return;
     }
+
+    if (!stream) {
+        console.warn("⚠ 웹캠이 활성화되지 않음!");
+        isCapturing = false; // 실행 중 플래그 해제
+        return;
+    }
+
+    triggerFlashEffect(); // 플래시 효과 실행
 
     const video = document.getElementById("cameraview");
     const videoWidth = video.videoWidth;
     const videoHeight = video.videoHeight;
-
     const canvas = document.getElementById("captureCanvas");
     const context = canvas.getContext("2d");
 
@@ -41,11 +108,16 @@ function capturecam() {
     newImage.classList.add("captured-img");
     newImage.style.width = "160px";
     newImage.style.height = "120px";
-    newImage.style.marginRight = "10px";
 
-    document.getElementById("capturedList").appendChild(newImage);
+    capturedList.appendChild(newImage);
+    updateImageCount(); // 개수 업데이트
 
     console.log(`📸 웹캠 화면 캡처됨! 해상도: ${videoWidth} x ${videoHeight}`);
+
+    // 일정 시간 후 다시 캡처 가능하도록 설정 (100ms 후 해제)
+    setTimeout(() => {
+        isCapturing = false;
+    }, 100);
 }
 
 // 가로 스크롤 (휠, 터치, 드래그 지원)
@@ -77,7 +149,7 @@ function enableHorizontalScroll() {
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - slider.offsetLeft;
-        const walk = (x - startX) * 2; // 이동 속도 조절
+        const walk = (x - startX) * 2;
         slider.scrollLeft = scrollLeft - walk;
     });
 
@@ -92,9 +164,9 @@ function enableHorizontalScroll() {
 
     slider.addEventListener("touchmove", (e) => {
         const touchMoveX = e.touches[0].pageX;
-        const walk = (touchMoveX - touchStartX) * 2; // 터치 이동 속도 조절
+        const walk = (touchMoveX - touchStartX) * 2;
         slider.scrollLeft = touchScrollLeft - walk;
-        e.preventDefault(); // 기본 터치 스크롤 방지
+        e.preventDefault();
     });
 
     // 마우스 휠 가로 스크롤 지원
@@ -104,9 +176,12 @@ function enableHorizontalScroll() {
     });
 }
 
-// 버튼 클릭 이벤트 리스너 추가
+// 버튼 클릭 이벤트 리스너 추가 (중복 실행 방지)
 document.addEventListener("DOMContentLoaded", () => {
     startWebcam();
-    document.getElementById("capturebtn").addEventListener("click", capturecam);
     enableHorizontalScroll();
+    updateImageCount(); // 초기 카운트 설정
+
+    // 캡처 버튼 클릭 이벤트 (중복 방지 적용)
+    document.getElementById("capturebtn").addEventListener("click", capturecam);
 });
