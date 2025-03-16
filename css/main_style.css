@@ -4,6 +4,7 @@
 body {
     background-color: black;
     height: 100vh;
+    margin: 0;
 }
 .main_wrap {
     display: flex;
@@ -12,6 +13,7 @@ body {
     align-items: center;
     width: 100%;
     height: 100%;
+    position: relative;
     /* 드래그막기 */
     -ms-user-select: none;
     -moz-user-select: -moz-none;
@@ -25,6 +27,7 @@ body {
     padding: 0 50px 30px;
     font-size: clamp(80px, 15vw, 200px);
     font-family: "Cormorant", serif;
+    z-index: 3;
 }
 .gobtn {
     color: white;
@@ -32,8 +35,49 @@ body {
     font-size: clamp(18px, 2vw, 24px);
     cursor: pointer;
     animation: colorchange 1s infinite;
+    z-index: 3;
 }
 
+.titlecircle {
+    width: 390px;
+    height: 690px;
+    position: absolute;
+    border: 2px solid white;
+    border-radius: 50%;
+    z-index: 2;
+    rotate: 40deg;
+}
+.titlecircle.cir2 {
+    left: 50%;
+    top: 50%;
+    transform: translate(-100%, -20%);
+    border: 1px solid white;
+}
+.bgheart,
+.bgstar {
+    position: absolute;
+}
+.bgheart {
+    width: 400px;
+    height: 400px;
+    top: 0%;
+    left: 22%;
+    transform: rotate(20deg);
+    filter: blur(4px);
+    z-index: 1;
+}
+.bgstar {
+    width: 200px;
+    height: 200px;
+    z-index: 4;
+    bottom: 6%;
+    right: 31%;
+}
+.bgheart img,
+.bgstar img {
+    width: 100%;
+    height: 100%;
+}
 /* 애니메이션 */
 @keyframes colorchange {
     0% {
