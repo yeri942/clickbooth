@@ -1,0 +1,32 @@
+body {
+    background-color: #111;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.sticker_wrap h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.selected_image_area {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.sticker-img {
+    width: 160px;
+    height: 120px;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: filter 0.3s ease-in-out;
+}
+
+/* ✅ 흑백 필터 */
+.sticker-img.gray {
+    filter: grayscale(100%);
+}
