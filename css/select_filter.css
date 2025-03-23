@@ -1,13 +1,186 @@
-.gallery {
+@import url("https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap");
+
+body {
+    background-color: black;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    font-family: "Cormorant", serif;
+    position: relative;
+    overflow: hidden;
+}
+.select_fpage_wrap {
     display: flex;
+    height: 100%;
+    margin: 0 5%;
+    align-items: center;
     justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+}
+.photosec h1 {
+    margin: 0;
+    color: white;
+}
+.photosec .gallery {
+    display: flex;
+    gap: 40px;
+    margin: 20px 0 10px;
+    width: 100%;
+    max-width: 730px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.photosec .count {
+    color: white;
+    text-align: right;
+    padding-right: 40px;
+    font-size: 25px;
+}
+/* gallery에 흑백 필터 적용 */
+.gallery.gray img {
+    filter: grayscale(100%);
+    transition: filter 0.1s ease-in-out;
+}
+/* 컬러 (기본 상태) */
+.gallery img {
+    filter: grayscale(0%);
+    transition: filter 0.1s ease-in-out;
 }
 
-.photo {
-    width: 160px;
-    height: 120px;
+.gallery .photo {
+    position: relative;
+    display: inline-block;
     border-radius: 5px;
-    border: 2px solid black;
+    width: calc(50% - 40px);
+    height: auto; /* height를 auto로 설정해서 이미지 크기에 맞춤 */
+    cursor: pointer;
+    z-index: 1;
+    overflow: hidden; /* after가 부모를 벗어나지 않도록 */
+}
+
+.gallery .photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(0%);
+    transition: filter 0.1s ease-in-out;
+}
+.gallery.gray .photo img {
+    filter: grayscale(100%);
+    transition: filter 0.1s ease-in-out;
+}
+.gallery .photo:hover::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 1;
+}
+
+.gallery .photo.selected {
+    border: 5px solid rgb(255, 255, 255);
+    box-sizing: border-box;
+    display: block;
+    aspect-ratio: 4 / 3;
+}
+.colormodebtn_wrap {
+    color: white;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.colormodebtn_wrap .colorbtn,
+.colormodebtn_wrap .graybtn {
+    border: 1px solid white;
+    border-radius: 50%;
+    height: 180px;
+    width: 180px;
+    line-height: 180px;
+    text-align: center;
+    font-size: 48px;
+    cursor: pointer;
+}
+.colormodebtn_wrap .colorbtn:hover,
+.colormodebtn_wrap .graybtn:hover {
+    transition: 0.3s ease-out;
+    background-color: white;
+    color: black;
+}
+
+.colormodebtn_wrap .colorbtn {
+    margin-bottom: 60px;
+}
+#nextBtn {
+    color: #9c9c9c;
+    padding-top: 15px;
+    font-size: 22px;
+    cursor: default;
+    transition: 0.2s;
+}
+
+#nextBtn.ready {
+    color: #ffffff;
+    cursor: pointer;
+}
+.bgstar {
+    max-width: 730px;
+    position: absolute;
+    bottom: -20%;
+    right: -5%;
+    transform: rotate(-10deg);
+    z-index: -1;
+    filter: blur(15px);
+}
+.bgstar img {
+    width: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+    .colormodebtn_wrap .colorbtn,
+    .colormodebtn_wrap .graybtn {
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        font-size: 30px;
+    }
+}
+
+@media screen and (max-aspect-ratio: 1/1) {
+    .select_fpage_wrap {
+        flex-direction: column;
+    }
+    .colormodebtn_wrap {
+        flex-direction: row;
+        width: 100%;
+    }
+    .colormodebtn_wrap .colorbtn {
+        margin-bottom: 0px;
+        margin-right: 20px;
+    }
+    .photosec .gallery {
+        gap: 10px;
+    }
+    .gallery .photo {
+        width: calc(50% - 5px);
+    }
+    .photosec .count {
+        padding-right: 0px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .colormodebtn_wrap .colorbtn,
+    .colormodebtn_wrap .graybtn {
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        font-size: 25px;
+    }
 }

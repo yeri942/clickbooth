@@ -5,10 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Select Filter</title>
         <link rel="stylesheet" href="./css/select_filter.css" />
-        <script defer src="./js/select_filter.js"></script>
     </head>
     <body>
-        <h1>Select Your Filter</h1>
-        <div id="photoGallery" class="gallery"></div>
+        <div class="select_fpage_wrap">
+            <div class="photosec">
+                <h1>Select 2 & Filter</h1>
+                <div id="photoGallery" class="gallery"></div>
+                <div id="imageCount" class="count">0/2</div>
+            </div>
+            <div class="colormodebtn_wrap">
+                <div class="colorbtn">Color</div>
+                <div class="graybtn">Gray</div>
+            </div>
+            <div id="nextBtn">Next ></div>
+        </div>
+        <div class="bgstar"><img src="./img/star.png" alt="background star image" srcset="" /></div>
+        <script defer src="./js/select_filter.js"></script>
     </body>
 </html>
