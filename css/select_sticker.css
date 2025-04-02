@@ -1,11 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap");
 body {
     background-color: #111;
     color: white;
     font-family: sans-serif;
     text-align: center;
-    padding: 40px 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: "Cormorant", serif;
 }
 
+img,
+button {
+    -webkit-user-drag: none;
+    user-drag: none;
+}
+.sticker_wrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
 .sticker_wrap h2 {
     font-size: 24px;
     margin-bottom: 20px;
@@ -14,19 +36,125 @@ body {
 .selected_image_area {
     display: flex;
     justify-content: center;
-    gap: 20px;
     flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    width: 40vw;
+    max-width: 400px;
+    height: 65vw;
+    max-height: 650px;
+    border: 1px solid;
+    position: relative; /* 추가 */
+    overflow: hidden; /* 추가 - 영역을 벗어난 스티커는 보이지 않게 함 */
 }
-
+.sticker_area_wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+.sticker_area_wrap .sticker_title {
+    position: absolute;
+    top: -90px;
+    left: 18%;
+    font-size: 96px;
+}
+.sticker_area_wrap .sticker_area {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    width: 50%;
+    max-width: 250px;
+    padding: 20px;
+    z-index: 2;
+}
+.sticker_area_wrap .sticker_area_bg {
+    width: 70%;
+    max-width: 350px;
+    height: 50vw;
+    max-height: 500px;
+    border: 1px solid white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(20deg);
+    z-index: 1;
+}
+.sticker_area .sticker {
+    width: calc(50% - 2px);
+}
+.sticker_area .sticker img {
+    width: 100%;
+    max-width: 120px;
+    height: auto;
+}
+.photo-container {
+    position: relative;
+    width: 78%;
+    margin-bottom: 3%;
+}
 .sticker-img {
-    width: 160px;
-    height: 120px;
-    border-radius: 8px;
+    width: 100%;
     object-fit: cover;
     transition: filter 0.3s ease-in-out;
+    aspect-ratio: 4 / 3;
 }
 
-/* ✅ 흑백 필터 */
 .sticker-img.gray {
     filter: grayscale(100%);
+}
+
+.placed-sticker {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    cursor: move;
+    z-index: 10;
+}
+
+.placed-sticker img {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.close-btn,
+.resize-handle,
+.rotate-handle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    color: black;
+    border-radius: 50%;
+    border: none;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    z-index: 20;
+}
+.close-btn {
+    top: -10px;
+    right: -10px;
+    cursor: pointer;
+}
+.resize-handle {
+    right: -10px;
+    bottom: -10px;
+    cursor: nwse-resize;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+.rotate-handle {
+    left: -10px;
+    bottom: -10px;
+    cursor: grab;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
 }
